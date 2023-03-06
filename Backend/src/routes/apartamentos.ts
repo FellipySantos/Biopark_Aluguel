@@ -3,12 +3,12 @@ import { FastifyInstance } from 'fastify'
 import { knex } from '../database'
 import { z } from 'zod'
 
-export async function prediosRoutes(app: FastifyInstance) {
+export async function apartamentoRoutes(app: FastifyInstance) {
   app.get('/', async () => {
     return knex.select('*').from('Apartamentos')
   })
   app.post('/', async (req, res) => {
-    const typePredio = z.object({
+    const typeApartamento = z.object({
       andar: z.string(),
       tamanho: z.string(),
       valor: z.number(),
@@ -16,7 +16,7 @@ export async function prediosRoutes(app: FastifyInstance) {
       alugado: z.boolean(),
     })
 
-    const { andar, tamanho, valor, predioId, alugado } = typePredio.parse(
+    const { andar, tamanho, valor, predioId, alugado } = typeApartamento.parse(
       req.body,
     )
     await knex('Apartamentos').insert({
