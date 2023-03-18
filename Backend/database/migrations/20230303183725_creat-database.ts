@@ -12,7 +12,7 @@ export async function up(knex: Knex): Promise<void> {
     table.text('tamanho').notNullable()
     table.decimal('valor').notNullable()
     table.text('predioId').references('id').inTable('Predios')
-    table.boolean('alugado').notNullable()
+    table.boolean('alugado').notNullable().defaultTo(false)
     table.timestamp('created_at').defaultTo(knex.fn.now()).notNullable()
   })
   await knex.schema.createTable('Moradores', (table) => {
@@ -21,7 +21,7 @@ export async function up(knex: Knex): Promise<void> {
     table.text('nome').notNullable()
     table.text('email').notNullable()
     table.text('telefone').notNullable()
-    table.boolean('morador').notNullable()
+    table.boolean('morador').notNullable().defaultTo(true)
     table.timestamp('dataEntrada').defaultTo(knex.fn.now()).notNullable()
     table.timestamp('dataSaida').defaultTo(knex.fn.now()).notNullable()
   })

@@ -4,17 +4,12 @@ import { knex } from '../database'
 import { z } from 'zod'
 
 export async function moradoresRoutes(app: FastifyInstance) {
-  app.get('/:id', async (req) => {
-    const typeLocacao = z.object({
-      id: z.string(),
-    })
-    const { id } = typeLocacao.parse(req.params)
-
-    return knex('Moradores').where('id', id).first()
+  app.get('/', async (req) => {
+    return knex.select('*').from('Moradores')
   })
   app.post('/', async (req, res) => {
     const typeMorador = z.object({
-      documento: z.string(),
+      documento: z.number(),
       nome: z.string(),
       email: z.string(),
       telefone: z.string(),

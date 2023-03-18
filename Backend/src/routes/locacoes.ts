@@ -4,21 +4,23 @@ import { knex } from '../database'
 import { z } from 'zod'
 
 export async function locacoesRoutes(app: FastifyInstance) {
-  app.get('/:apartamentoId/:moradorId', async (req) => {
+  app.get('/:apartamentoId', async (req) => {
     const typeLocacao = z.object({
       apartamentoId: z.string(),
-      moradorId: z.string(),
     })
 
-    const { apartamentoId, moradorId } = typeLocacao.parse(req.params)
+    const { apartamentoId } = typeLocacao.parse(req.params)
 
-    const apartamento = await knex('Apartamentos')
-      .where('id', apartamentoId)
+    const idMorador = knex('Aluguel')
+      .select('moradorId')
+      .where('apartamentoId', apartamentoId)
       .first()
+    const morador = knex('Moradores').where('id', idMorador)
 
-    const morador = knex('Moradores').where('id', moradorId).first()
-
-    return { apartamento, morador }
+    return morador
+  })
+  app.get('/', async () => {
+    return knex.select('*').from('Aluguel')
   })
   app.post('/', async (req, res) => {
     const typeLocacao = z.object({

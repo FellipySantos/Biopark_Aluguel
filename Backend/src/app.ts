@@ -3,8 +3,11 @@ import { prediosRoutes } from './routes/predios'
 import { apartamentoRoutes } from './routes/apartamentos'
 import { locacoesRoutes } from './routes/locacoes'
 import { moradoresRoutes } from './routes/moradores'
+import cors from '@fastify/cors'
 const app = fastify()
-
+app.register(cors, {
+  origin: '*',
+})
 app.register(prediosRoutes, {
   prefix: 'Predios',
 })
@@ -15,7 +18,7 @@ app.register(locacoesRoutes, {
   prefix: 'Aluguel',
 })
 app.register(moradoresRoutes, {
-  prefix: 'Aluguel',
+  prefix: 'Moradores',
 })
 app
   .listen({
